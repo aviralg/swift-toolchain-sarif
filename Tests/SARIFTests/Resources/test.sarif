@@ -1,0 +1,141 @@
+{
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/cos02/schemas/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "artifacts": [
+        {
+          "length": 99,
+          "location": {
+            "index": 0,
+            "uri": "file:///Volumes/LocalData/Code/Private/Repro/test.cpp"
+          },
+          "mimeType": "text/plain",
+          "roles": [
+            "resultFile"
+          ]
+        }
+      ],
+      "columnKind": "unicodeCodePoints",
+      "results": [
+        {
+          "codeFlows": [
+            {
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "importance": "essential",
+                      "location": {
+                        "message": {
+                          "text": "Assuming pointer value is null"
+                        },
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "index": 0,
+                            "uri": "file:///Volumes/LocalData/Code/Private/Repro/test.cpp"
+                          },
+                          "region": {
+                            "endColumn": 21,
+                            "endLine": 2,
+                            "startColumn": 9,
+                            "startLine": 2
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "importance": "unimportant",
+                      "location": {
+                        "message": {
+                          "text": "Taking true branch"
+                        },
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "index": 0,
+                            "uri": "file:///Volumes/LocalData/Code/Private/Repro/test.cpp"
+                          },
+                          "region": {
+                            "endColumn": 5,
+                            "startColumn": 5,
+                            "startLine": 2
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "importance": "essential",
+                      "location": {
+                        "message": {
+                          "text": "Dereference of null pointer (loaded from variable 'p')"
+                        },
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "index": 0,
+                            "uri": "file:///Volumes/LocalData/Code/Private/Repro/test.cpp"
+                          },
+                          "region": {
+                            "endColumn": 18,
+                            "endLine": 3,
+                            "startColumn": 16,
+                            "startLine": 3
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "index": 0,
+                  "uri": "file:///Volumes/LocalData/Code/Private/Repro/test.cpp"
+                },
+                "region": {
+                  "endColumn": 18,
+                  "endLine": 3,
+                  "startColumn": 16,
+                  "startLine": 3
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Dereference of null pointer (loaded from variable 'p')"
+          },
+          "ruleId": "core.NullDereference",
+          "ruleIndex": 0
+        }
+      ],
+      "tool": {
+        "driver": {
+          "fullName": "clang static analyzer",
+          "informationUri": "https://clang.llvm.org/docs/UsersManual.html",
+          "language": "en-US",
+          "name": "clang",
+          "rules": [
+            {
+              "defaultConfiguration": {
+                "enabled": true,
+                "level": "warning",
+                "rank": -1
+              },
+              "fullDescription": {
+                "text": "Check for dereferences of null pointers"
+              },
+              "helpUri": "https://clang.llvm.org/docs/analyzer/checkers.html#core-nulldereference",
+              "id": "core.NullDereference",
+              "name": "core.NullDereference"
+            }
+          ],
+          "version": "Apple clang version 17.0.0 (clang-1700.3.10.902)"
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}
