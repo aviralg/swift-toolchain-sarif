@@ -30,7 +30,7 @@ public struct JSONDictionary<K: Hashable & Codable, V>: Sequence,
   public var values: Values { self.dictionary.values }
   public var count: Int { self.dictionary.count }
 
-  package var ifNotEmpty: Self? {
+  public var ifNotEmpty: Self? {
     if self.isEmpty {
       nil
     } else {

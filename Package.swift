@@ -14,7 +14,8 @@ let package = Package(
     .library(
       name: "SARIF",
       targets: ["SARIF", "SARIFMerge", "SARIFRecords"],
-    )
+    ),
+    .library(name: "ImmutableJSON", targets: ["ImmutableJSON"]),
   ],
   dependencies: [
     .package(
