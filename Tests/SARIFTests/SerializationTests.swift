@@ -50,7 +50,7 @@ func difference(expected: String, actual: String) -> String? {
   }
 }
 
-func expectJSON(
+package func expectJSON(
   expected: some Encodable, actual: some Encodable,
   sourceLocation: SourceLocation = #_sourceLocation
 ) {

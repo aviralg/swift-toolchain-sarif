@@ -13,7 +13,7 @@ let package = Package(
   products: [
     .library(
       name: "SARIF",
-      targets: ["SARIF", "SARIFRecords"],
+      targets: ["SARIF", "SARIFMerge", "SARIFRecords"],
     )
   ],
   dependencies: [
@@ -44,6 +44,14 @@ let package = Package(
       ],
     ),
     .target(
+      name: "SARIFMerge",
+      dependencies: [
+        "SARIF",
+        "SARIFRecords",
+        .product(name: "OrderedCollections", package: "swift-collections"),
+      ],
+    ),
+    .target(
       name: "SARIFTestUtilities",
       dependencies: [],
     ),
@@ -60,6 +68,19 @@ let package = Package(
       dependencies: [
         "ImmutableJSON",
         "SARIF",
+        "SARIFTestUtilities",
+      ],
+      resources: [
+        .copy("Resources")
+      ],
+    ),
+    .testTarget(
+      name: "SARIFMergeTests",
+      dependencies: [
+        "ImmutableJSON",
+        "SARIF",
+        "SARIFMerge",
+        "SARIFTests",
         "SARIFTestUtilities",
       ],
       resources: [

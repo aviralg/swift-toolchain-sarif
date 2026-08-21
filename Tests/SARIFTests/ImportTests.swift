@@ -14,8 +14,8 @@ func readJSON<T: Decodable>(_ type: T.Type, named name: String) throws -> T {
   return try T.fromJSONData(data)
 }
 
-func loadSarifLog(from fileName: String, sink: any ValidationSink) throws
-  -> SARIFLog
+package func loadSarifLog(from fileName: String, sink: any ValidationSink)
+  throws -> SARIFLog
 {
   let logRecord = try readJSON(SARIFLogRecord.self, named: fileName)
 
