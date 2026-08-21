@@ -1,0 +1,185 @@
+{
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/cos02/schemas/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "artifacts": [
+        {
+          "length": 36,
+          "location": {
+            "index": 0,
+            "uri": "file:///Volumes/LocalData/Code/Private/Repro/test2.cpp"
+          },
+          "mimeType": "text/plain",
+          "roles": [
+            "resultFile"
+          ]
+        }
+      ],
+      "columnKind": "unicodeCodePoints",
+      "results": [
+        {
+          "codeFlows": [
+            {
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "importance": "essential",
+                      "location": {
+                        "message": {
+                          "text": "Value stored to 'p' during its initialization is never read"
+                        },
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "index": 0,
+                            "uri": "file:///Volumes/LocalData/Code/Private/Repro/test2.cpp"
+                          },
+                          "region": {
+                            "endColumn": 10,
+                            "startColumn": 10,
+                            "startLine": 2
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "index": 0,
+                  "uri": "file:///Volumes/LocalData/Code/Private/Repro/test2.cpp"
+                },
+                "region": {
+                  "endColumn": 10,
+                  "startColumn": 10,
+                  "startLine": 2
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Value stored to 'p' during its initialization is never read"
+          },
+          "ruleId": "deadcode.DeadStores",
+          "ruleIndex": 0
+        },
+        {
+          "codeFlows": [
+            {
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "importance": "essential",
+                      "location": {
+                        "message": {
+                          "text": "Memory is allocated"
+                        },
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "index": 0,
+                            "uri": "file:///Volumes/LocalData/Code/Private/Repro/test2.cpp"
+                          },
+                          "region": {
+                            "endColumn": 21,
+                            "endLine": 2,
+                            "startColumn": 14,
+                            "startLine": 2
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "importance": "essential",
+                      "location": {
+                        "message": {
+                          "text": "Potential leak of memory pointed to by 'p'"
+                        },
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "index": 0,
+                            "uri": "file:///Volumes/LocalData/Code/Private/Repro/test2.cpp"
+                          },
+                          "region": {
+                            "endColumn": 1,
+                            "startColumn": 1,
+                            "startLine": 3
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "index": 0,
+                  "uri": "file:///Volumes/LocalData/Code/Private/Repro/test2.cpp"
+                },
+                "region": {
+                  "endColumn": 1,
+                  "startColumn": 1,
+                  "startLine": 3
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Potential leak of memory pointed to by 'p'"
+          },
+          "ruleId": "cplusplus.NewDeleteLeaks",
+          "ruleIndex": 1
+        }
+      ],
+      "tool": {
+        "driver": {
+          "fullName": "clang static analyzer",
+          "informationUri": "https://clang.llvm.org/docs/UsersManual.html",
+          "language": "en-US",
+          "name": "clang",
+          "rules": [
+            {
+              "defaultConfiguration": {
+                "enabled": true,
+                "level": "warning",
+                "rank": -1
+              },
+              "fullDescription": {
+                "text": "Check for values stored to variables that are never read afterwards"
+              },
+              "helpUri": "https://clang.llvm.org/docs/analyzer/checkers.html#deadcode-deadstores",
+              "id": "deadcode.DeadStores",
+              "name": "deadcode.DeadStores"
+            },
+            {
+              "defaultConfiguration": {
+                "enabled": true,
+                "level": "warning",
+                "rank": -1
+              },
+              "fullDescription": {
+                "text": "Check for memory leaks. Traces memory managed by new/delete."
+              },
+              "helpUri": "https://clang.llvm.org/docs/analyzer/checkers.html#cplusplus-newdeleteleaks",
+              "id": "cplusplus.NewDeleteLeaks",
+              "name": "cplusplus.NewDeleteLeaks"
+            }
+          ],
+          "version": "Apple clang version 17.0.0 (clang-1700.3.10.902)"
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}
