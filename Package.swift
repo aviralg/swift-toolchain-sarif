@@ -6,7 +6,7 @@ import PackageDescription
 import class Foundation.ProcessInfo
 
 let package = Package(
-  name: "sarif",
+  name: "swift-toolchain-sarif",
   platforms: [
     .macOS(.v15)
   ],
