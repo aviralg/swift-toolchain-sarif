@@ -1,4 +1,3 @@
-public import Combine
 public import Foundation
 
 extension JSONEncoder.OutputFormatting {
@@ -35,7 +34,7 @@ private struct DecodingWrapper<Value>: DecodableWithConfiguration {
   }
 }
 
-public struct ImmutableJSONEncoder: TopLevelEncoder, Sendable {
+public struct ImmutableJSONEncoder: Sendable {
   private let encoder: JSONEncoder
 
   public static let pretty = ImmutableJSONEncoder(formatting: .pretty)
@@ -73,7 +72,7 @@ public struct ImmutableJSONEncoder: TopLevelEncoder, Sendable {
   }
 }
 
-public struct ImmutableJSONDecoder: TopLevelDecoder, Sendable {
+public struct ImmutableJSONDecoder: Sendable {
   private let decoder: JSONDecoder
 
   public static let shared = ImmutableJSONDecoder()
