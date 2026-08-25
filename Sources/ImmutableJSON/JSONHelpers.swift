@@ -34,6 +34,51 @@ private struct DecodingWrapper<Value>: DecodableWithConfiguration {
   }
 }
 
+private struct ConfiguredEncodingWrapper<Value: EncodableWithConfiguration>:
+  Encodable
+{
+  let value: Value
+  let configuration: Value.EncodingConfiguration
+
+  func encode(to encoder: any Encoder) throws {
+    try self.value.encode(to: encoder, configuration: self.configuration)
+  }
+}
+
+private let decodingConfigurationKey = CodingUserInfoKey(
+  rawValue:
+    "org.swift.swift-toolchain-sarif.ImmutableJSON.decodingConfiguration"
+)!
+
+private final class ConfigurationCarrier<Configuration>: @unchecked Sendable {
+  let configuration: Configuration
+
+  init(_ configuration: Configuration) {
+    self.configuration = configuration
+  }
+}
+
+private struct ConfiguredDecodingWrapper<Value: DecodableWithConfiguration>:
+  Decodable
+{
+  let value: Value
+
+  init(from decoder: any Decoder) throws {
+    guard
+      let carrier = decoder.userInfo[decodingConfigurationKey]
+        as? ConfigurationCarrier<Value.DecodingConfiguration>
+    else {
+      throw DecodingError.dataCorrupted(
+        DecodingError.Context(
+          codingPath: decoder.codingPath,
+          debugDescription:
+            "No decoding configuration was provided for \(Value.self)."))
+    }
+
+    self.value = try Value(from: decoder, configuration: carrier.configuration)
+  }
+}
+
 public struct ImmutableJSONEncoder: Sendable {
   private let encoder: JSONEncoder
 
@@ -61,7 +106,8 @@ public struct ImmutableJSONEncoder: Sendable {
   public func encode<Value: EncodableWithConfiguration>(
     _ value: Value, configuration: Value.EncodingConfiguration
   ) throws -> Data {
-    try self.encoder.encode(value, configuration: configuration)
+    try self.encoder.encode(
+      ConfiguredEncodingWrapper(value: value, configuration: configuration))
   }
 
   public func encode<Value>(
@@ -92,7 +138,12 @@ public struct ImmutableJSONDecoder: Sendable {
   public func decode<T: DecodableWithConfiguration>(
     _ type: T.Type, from data: Data, configuration: T.DecodingConfiguration
   ) throws -> T {
-    try self.decoder.decode(type, from: data, configuration: configuration)
+    let decoder = self.makeDecoder()
+    decoder.userInfo[decodingConfigurationKey] = ConfigurationCarrier(
+      configuration)
+
+    return try decoder.decode(ConfiguredDecodingWrapper<T>.self, from: data)
+      .value
   }
 
   public func decode<Value>(

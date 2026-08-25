@@ -1,6 +1,15 @@
 internal import OrderedCollections
 internal import SARIF
 
+extension AnyKeyPath {
+  var propertyDescription: String {
+    if #available(macOS 13.3, iOS 16.4, tvOS 16.4, watchOS 9.4, *) {
+      return self.debugDescription
+    }
+    return String(describing: type(of: self))
+  }
+}
+
 struct PropertyMerger<T> {
   let input: T
   var output: T
@@ -99,7 +108,8 @@ struct PropertyMerger<T> {
       let outputValue = self.output[keyPath: key]
       guard resolvedInputValue === outputValue else {
         try sink.fatalError(
-          "Unexpected unequal values for property '\(key.debugDescription)'.")
+          "Unexpected unequal values for property '\(key.propertyDescription)'."
+        )
       }
     }
   }
@@ -115,7 +125,8 @@ struct PropertyMerger<T> {
         let outputValue = self.output[keyPath: key]
         guard inputValue == outputValue else {
           try sink.fatalError(
-            "Unexpected unequal values for property '\(key.debugDescription)'.")
+            "Unexpected unequal values for property '\(key.propertyDescription)'."
+          )
         }
       }
     }
@@ -131,7 +142,7 @@ struct PropertyMerger<T> {
         if let outputValue = self.output[keyPath: key] {
           guard inputValue == outputValue else {
             try sink.fatalError(
-              "Unexpected unequal values for property '\(key.debugDescription)'."
+              "Unexpected unequal values for property '\(key.propertyDescription)'."
             )
           }
         } else {
@@ -152,7 +163,7 @@ struct PropertyMerger<T> {
         let outputValue = self.output[keyPath: key]
         if inputValue != outputValue {
           try sink.recoverableError(
-            "Expected values for property '\(key.debugDescription)' to be equal. Using the first value specified."
+            "Expected values for property '\(key.propertyDescription)' to be equal. Using the first value specified."
           )
         }
       }
@@ -163,7 +174,7 @@ struct PropertyMerger<T> {
     for key in repeat each keys {
       guard self.input[keyPath: key] == nil else {
         try self.sink.fatalError(
-          "Unexpected non-nil value for property '\(key.debugDescription)'.")
+          "Unexpected non-nil value for property '\(key.propertyDescription)'.")
       }
     }
   }
