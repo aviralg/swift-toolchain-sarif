@@ -8,7 +8,7 @@ import class Foundation.ProcessInfo
 let package = Package(
   name: "swift-toolchain-sarif",
   platforms: [
-    .macOS(.v15)
+    .macOS(.v13)
   ],
   products: [
     .library(
