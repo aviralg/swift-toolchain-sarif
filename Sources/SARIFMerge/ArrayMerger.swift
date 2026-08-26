@@ -78,7 +78,7 @@ internal struct FixedArrayMerger<
     } else {
       guard inputElements.count == self.elements.count else {
         try merger.sink.fatalError(
-          "Array size mismatch for property '\(key.debugDescription)'.")
+          "Array size mismatch for property '\(key)'.")
       }
 
       try self.elements.enumerated().forEach { index, elementMerger in

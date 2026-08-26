@@ -58,17 +58,11 @@ public struct ImmutableJSONEncoder: Sendable {
     try self.encoder.encode(value)
   }
 
+  @available(macOS 14, *)
   public func encode<Value: EncodableWithConfiguration>(
     _ value: Value, configuration: Value.EncodingConfiguration
   ) throws -> Data {
     try self.encoder.encode(value, configuration: configuration)
-  }
-
-  public func encode<Value>(
-    _ value: Value,
-    encode: @escaping (_ value: Value, _ encoder: any Encoder) throws -> Void
-  ) throws -> Data {
-    try self.encode(EncodingWrapper(value: value), configuration: encode)
   }
 }
 
@@ -89,19 +83,11 @@ public struct ImmutableJSONDecoder: Sendable {
     try self.decoder.decode(type, from: data)
   }
 
+  @available(macOS 14, *)
   public func decode<T: DecodableWithConfiguration>(
     _ type: T.Type, from data: Data, configuration: T.DecodingConfiguration
   ) throws -> T {
     try self.decoder.decode(type, from: data, configuration: configuration)
-  }
-
-  public func decode<Value>(
-    _ type: Value.Type, from data: Data,
-    decode: @escaping (_ decoder: any Decoder) throws -> Value
-  ) throws -> Value {
-    try self.decode(
-      DecodingWrapper<Value>.self, from: data, configuration: decode
-    ).value
   }
 
   public func makeDecoder() -> JSONDecoder {
@@ -145,6 +131,7 @@ extension Decodable {
 }
 
 extension DecodableWithConfiguration {
+  @available(macOS 14, *)
   public static func fromJSONData(
     _ data: Data, configuration: DecodingConfiguration
   ) throws -> Self {

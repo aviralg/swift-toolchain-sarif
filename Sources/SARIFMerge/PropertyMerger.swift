@@ -99,7 +99,7 @@ struct PropertyMerger<T> {
       let outputValue = self.output[keyPath: key]
       guard resolvedInputValue === outputValue else {
         try sink.fatalError(
-          "Unexpected unequal values for property '\(key.debugDescription)'.")
+          "Unexpected unequal values for property '\(key)'.")
       }
     }
   }
@@ -115,7 +115,7 @@ struct PropertyMerger<T> {
         let outputValue = self.output[keyPath: key]
         guard inputValue == outputValue else {
           try sink.fatalError(
-            "Unexpected unequal values for property '\(key.debugDescription)'.")
+            "Unexpected unequal values for property '\(key)'.")
         }
       }
     }
@@ -131,7 +131,7 @@ struct PropertyMerger<T> {
         if let outputValue = self.output[keyPath: key] {
           guard inputValue == outputValue else {
             try sink.fatalError(
-              "Unexpected unequal values for property '\(key.debugDescription)'."
+              "Unexpected unequal values for property '\(key)'."
             )
           }
         } else {
@@ -152,7 +152,7 @@ struct PropertyMerger<T> {
         let outputValue = self.output[keyPath: key]
         if inputValue != outputValue {
           try sink.recoverableError(
-            "Expected values for property '\(key.debugDescription)' to be equal. Using the first value specified."
+            "Expected values for property '\(key)' to be equal. Using the first value specified."
           )
         }
       }
@@ -163,7 +163,7 @@ struct PropertyMerger<T> {
     for key in repeat each keys {
       guard self.input[keyPath: key] == nil else {
         try self.sink.fatalError(
-          "Unexpected non-nil value for property '\(key.debugDescription)'.")
+          "Unexpected non-nil value for property '\(key)'.")
       }
     }
   }

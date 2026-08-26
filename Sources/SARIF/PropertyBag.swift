@@ -82,19 +82,6 @@ extension PropertyProvider where Value: Encodable {
   }
 }
 
-extension PropertyProvider {
-  fileprivate static func toJSON(_ value: Value) throws -> AnyJSON {
-    let data = try ImmutableJSONEncoder.compact.encode(value, encode: encode)
-    return try AnyJSON.fromJSONData(data)
-  }
-
-  fileprivate static func fromJSON(_ json: AnyJSON) throws -> Value {
-    let data = try json.toJSONData()
-    return try ImmutableJSONDecoder.shared.decode(
-      Value.self, from: data, decode: decode)
-  }
-}
-
 private protocol PropertyWrapperProtocol: JSONRepresentable<AnyJSON> {
   associatedtype Value
 
@@ -104,12 +91,25 @@ private protocol PropertyWrapperProtocol: JSONRepresentable<AnyJSON> {
 }
 
 private struct PropertyWrapper<Provider: PropertyProvider>:
-  PropertyWrapperProtocol
+  PropertyWrapperProtocol, Codable
 {
   let value: Provider.Value
 
+  init(value: Provider.Value) {
+    self.value = value
+  }
+
+  init(from decoder: any Decoder) throws {
+    self.value = try Provider.decode(from: decoder)
+  }
+
+  func encode(to encoder: any Encoder) throws {
+    try Provider.encode(self.value, to: encoder)
+  }
+
   func toJSON() throws -> AnyJSON {
-    try Provider.toJSON(self.value)
+    let data = try ImmutableJSONEncoder.compact.encode(self)
+    return try AnyJSON.fromJSONData(data)
   }
 }
 
@@ -122,9 +122,7 @@ extension PropertyProvider {
     -> some PropertyWrapperProtocol
   {
     let data = try json.toJSONData()
-    let value = try ImmutableJSONDecoder.shared.decode(
-      Value.self, from: data, decode: decode)
-    return PropertyWrapper<Self>(value: value)
+    return try PropertyWrapper<Self>.fromJSONData(data)
   }
 }
 
